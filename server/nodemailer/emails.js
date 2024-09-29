@@ -33,7 +33,7 @@ dotenv.config();
 	  const response = await transporter.sendMail({
 		from: `"BrightScholars" <${process.env.GMAIL_USER}>`,  // Sender's email address
 		to: email,  // Recipient's email
-		subject: "Welcome to Junktion!",  // Email subject
+		subject: "Welcome to BrightScholars!",  // Email subject
 		html: WELCOME_EMAIL_TEMPLATE.replace("{name}", name),  // HTML email body
 	  });
   

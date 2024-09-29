@@ -49,27 +49,23 @@ export const ContextProvider = ({ children }) => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        withCredentials: true, // Ensures cookies are sent and received
+        withCredentials: true,
       });
 
-      console.log(response);
-
-      // Handle successful response
       const user = response.data.user;
       const message = response.data.message;
 
-      // Set user and message
       setUser(user);
       setMessage(message);
       setIsAuthenticated(true);
 
+      handleToast("Signup successful!", "success");
+      navigate("/verify-otp");
     } catch (err) {
-      console.error(err);
       const errorMessage = err.response.data.message;
       setError(errorMessage);
-      throw err;
+      handleToast(errorMessage, "error");
     } finally {
-      // Stop loading spinner
       setIsLoading(false);
     }
   };
@@ -79,35 +75,28 @@ export const ContextProvider = ({ children }) => {
     setIsLoading(true);
     setMessage(null);
     setError(null);
+
     try {
       const response = await axios.post(
         `${SERVER_URL}/login`,
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
+        { email, password },
+        { withCredentials: true }
       );
-      console.log(response);
 
-      // Handle successful response
       const user = response.data.user;
       const message = response.data.message;
 
-      // Set user and message
       setUser(user);
       setMessage(message);
       setIsAuthenticated(true);
 
+      handleToast("Login successful!", "success");
       navigate("/");
     } catch (err) {
-      console.error(err);
       const errorMessage = err.response.data.message;
       setError(errorMessage);
+      handleToast(errorMessage, "error");
       navigate("/login");
-      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -118,24 +107,19 @@ export const ContextProvider = ({ children }) => {
     setIsLoading(true);
     setMessage(null);
     setError(null);
+
     try {
-      await axios.post(
-        `${SERVER_URL}/logout`,
-        {},
-        {
-          withCredentials: true, // Ensure cookies are sent with the request
-        }
-      );
+      await axios.post(`${SERVER_URL}/logout`, {}, { withCredentials: true });
+
       setUser(null);
       setIsAuthenticated(false);
-    
+      handleToast("Logout successful!", "success");
+
       navigate("/login");
     } catch (err) {
-      console.error(err);
       const errorMessage = err.response?.data?.message || "Error in Logout";
       setError(errorMessage);
-     
-      throw err;
+      handleToast(errorMessage, "error");
     } finally {
       setIsLoading(false);
     }
@@ -151,19 +135,19 @@ export const ContextProvider = ({ children }) => {
       const response = await axios.post(
         `${SERVER_URL}/verify-email`,
         { code },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
+
       setUser(response.data.user);
       setIsAuthenticated(true);
-      
+      handleToast("Email verified successfully!", "success");
+
       navigate("/");
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || "Error in email verification";
       setError(errorMessage);
-      throw err;
+      handleToast(errorMessage, "error");
     } finally {
       setIsLoading(false);
     }
@@ -179,10 +163,6 @@ export const ContextProvider = ({ children }) => {
         withCredentials: true,
       });
 
-      // Log the response for debugging
-      console.log("Check Auth Response:", response);
-
-      // Update user and authentication status based on the response
       if (response.data.user) {
         setUser(response.data.user);
         setIsAuthenticated(true);
@@ -191,10 +171,6 @@ export const ContextProvider = ({ children }) => {
         setIsAuthenticated(false);
       }
     } catch (err) {
-      // Log error for debugging
-      console.error("Check Auth Error:", err);
-
-      // Handle errors
       setUser(null);
       setIsAuthenticated(false);
       setError(
@@ -210,44 +186,21 @@ export const ContextProvider = ({ children }) => {
     setIsLoading(true);
     setError(null);
     setMessage(null);
-    console.log(email);
+
     try {
       const response = await axios.post(
         `${SERVER_URL}/forgot-password`,
-        {
-          email,
-        },
-        {
-          withCredentials: true,
-        }
+        { email },
+        { withCredentials: true }
       );
-      console.log(response);
+
       setMessage(response.data.message);
-      toast.success(message || "Reset password email sent successfully", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      handleToast(response.data.message || "Reset password email sent successfully!", "success");
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || "Error in password reset";
       setError(errorMessage);
-      toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      throw err;
+      handleToast(errorMessage, "error");
     } finally {
       setIsLoading(false);
     }
@@ -261,22 +214,13 @@ export const ContextProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        `${SERVER_URL}/reset-password/${token}`, // Ensure URL is correct
+        `${SERVER_URL}/reset-password/${token}`,
         { password },
         { withCredentials: true }
       );
 
       setMessage(response.data.message);
-      toast.success(response.data.message || "Password Reset Successful", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      handleToast(response.data.message || "Password Reset Successful", "success");
 
       setTimeout(() => {
         navigate("/login");
@@ -285,29 +229,16 @@ export const ContextProvider = ({ children }) => {
       const errorMessage =
         err.response?.data?.message || "Error in password reset";
       setError(errorMessage);
-      toast.error(errorMessage, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      throw err;
+      handleToast(errorMessage, "error");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Execute checkAuth when the component mounts
   useEffect(() => {
     checkAuth();
-  }, [user]);
+  }, [isAuthenticated]);
 
-  // Memoize the context value to avoid unnecessary re-renders
   const contextValue = {
     user,
     setUser,

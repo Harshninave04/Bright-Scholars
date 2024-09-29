@@ -3,10 +3,8 @@ import {
   AiOutlineMail,
   AiOutlineLock,
   AiOutlineUser,
-  AiOutlinePhone,
-  AiOutlineHome,
 } from 'react-icons/ai'; // Mail, Lock, User, Phone, and Home icons
-import RoleToggle from '../components/FormComponents/RoleToggle';
+
 import UploadProfile from '../components/FormComponents/UploadProfile';
 import InputField from '../components/FormComponents/InputField';
 import { Link } from 'react-router-dom';
@@ -21,17 +19,9 @@ const SignUp = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'Scrap Dealer',
-    mobile: '',
-    address: '',
+    role: 'student',
     profileImage: null,
   });
-
-  const handleRoleToggle = () => {
-    const newRole = role === 'Kabadiwala' ? 'Scrap Dealer' : 'Kabadiwala';
-    setRole(newRole);
-    setSignUpData({ ...signUpData, role: newRole });
-  };
 
   const handleProfilePicChange = (event) => {
     const file = event.target.files[0];
@@ -59,8 +49,6 @@ const SignUp = () => {
     formData.append('role', signUpData.role);
     formData.append('password', signUpData.password);
     formData.append('confirmPassword', signUpData.confirmPassword);
-    formData.append('mobile', signUpData.mobile);
-    formData.append('address', signUpData.address);
 
     // Handle profile image
     if (signUpData.profileImage) {

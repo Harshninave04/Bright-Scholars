@@ -11,7 +11,7 @@ const NavMenu = ({isAuthenticated, classes}) => {
       name: "Scholarships", to: "/scholarships"
     },
     {
-      name: "Explore", to: "/explore"
+      name: "Dashboard", to: "/dashboard"
     },
     {
       name: "About", to: "/about"

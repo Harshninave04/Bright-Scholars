@@ -14,7 +14,6 @@ import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import Profile from "./pages/Profile.jsx";
 import Error from "./pages/Error.jsx";
-import Materials from "./pages/Materials.jsx";
 import Services from "./pages/Services.jsx";
 import Landing from "./pages/Landing.jsx";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import the ProtectedRoute
@@ -22,6 +21,8 @@ import NonProtectedRoute from "./components/NonProtectedRoute.jsx";
 import OTPPage from "./pages/OTPPage.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
+import Scholarships from "./pages/Scholarships.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -54,12 +55,12 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "materials",
-        element: <Materials />,
+        path: "scholarships",
+        element: <Scholarships />,
       },
       {
-        path: "services",
-        element: <Services />,
+        path: "dashboard",
+        element: <Dashboard />,
       },
       {
         path: "landing-page",

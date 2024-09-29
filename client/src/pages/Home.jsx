@@ -1,10 +1,10 @@
 import React from 'react';
+import { useGlobalContext } from '../contexts/GlobalContext';
 // import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
-  // Retrieve user data from local storage
-  const user = JSON.parse(localStorage.getItem('user'));
+ const {user} = useGlobalContext();
 
   // Handle case where user data might not be available
   if (!user) {
@@ -14,7 +14,6 @@ const Home = () => {
   return (
     <div>
       <h1>Welcome, {user.name}!</h1>
-      <img src={user?.profileImage} alt="profile image" />
       <p>Role: {user.role}</p>
     </div>
   );
